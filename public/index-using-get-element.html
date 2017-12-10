@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+    <title>Simple react application by MinhTranFU</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="form-search" id="form-search"></div>
+        <div class="todo-list" id="todo-list"></div>
+        <div class="form-add" id="form-add"></div>
+    </div>
+    <div id="root"></div>
+    <script type="text/babel">
+        var FormSearch = React.createClass({
+            render: function(){
+                return (
+                    <div>
+                        <input type="text" ref="keyword" id="keyword" name="keyword" onChange={this.props.onChange}/>
+                    </div>
+                );
+            }
+        });
+        var FormAdd = React.createClass({
+            render: function(){
+                return (
+                    <form onSubmit={this.props.onSubmit}>
+                        <input type="text" ref="todo" id="todo" name="todo" />
+                        <input type="submit" value="Add"/>
+                    </form>
+                );
+            }
+        });
+        
+        var App = React.createClass({
+            getInitialState: function(){
+                return {
+                    todos: ["eat","code","sleep"],
+                    keyword: "",
+                }
+            },
+            addTodo: function(e){
+                e.preventDefault();
+                //USING JAVASCRIPT TO GET ELEMENT VALUE
+                // var inputTodo = document.getElementById("todo");
+                // var inputKeyword = document.getElementById("keyword");
+                // var todo = inputTodo.value;
+                // var newTodos = this.state.todos;
+
+                // newTodos.push(todo);
+                // this.setState({
+                //     todos: newTodos,
+                //     keyword: ""
+                // });
+                // inputTodo.value = "";
+                // inputKeyword.value = "";
+
+                //USING refs TO GET ELEMENT VALUE
+                // var todo = this.refs.todo;
+                // var newTodos = this.state.todos;
+                // newTodos.push(todo);
+                // this.setState({
+                //     todos: newTodos,
+                //     keyword: ""
+                // });
+                // this.refs.todo = "";
+                // this.refs.keyword = "";
+                console.log();
+                
+                return false;
+            },
+            search: function() {
+                var keyword = document.getElementById("keyword").value;
+                this.setState({
+                    todos: this.state.todos,
+                    keyword: keyword
+                });
+            },
+            render: function(){
+                var keyword = this.state.keyword;
+                var todos = this.state.todos.map(function(todo,index){
+                    if (todo.indexOf(keyword) >= 0) {
+                        return <li key={index}>{todo}</li>;
+                    }
+                });
+                return (
+                    
+                    <div>
+                        <div>
+                            <FormSearch onChange={this.search} />
+                        </div>
+                        <h1> Welcome to the ToDo list!</h1>
+                        <ul>
+                            {todos}     
+                        </ul>
+                        <div>
+                            <FormAdd onSubmit={this.addTodo} />
+                        </div>
+                    </div>
+                );
+            }
+        });
+        
+        ReactDOM.render(<App /> ,  document.getElementById("todo-list"));
+    </script>
+</body>
+
+</html>
